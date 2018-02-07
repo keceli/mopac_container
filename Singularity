@@ -6,8 +6,9 @@ or you need to edit the recipe with your own license key.
 %setup
 echo "Creating directory:"  ${SINGULARITY_ROOTFS}/opt/mopac
 mkdir -p ${SINGULARITY_ROOTFS}/opt/mopac
-cp ~/mopac_license.txt ${SINGULARITY_ROOTFS}/opt/mopac
-
+if [[ -e  ~/mopac_license.txt]] ; then
+  cp -p ~/mopac_license.txt ${SINGULARITY_ROOTFS}/opt/mopac
+fi
 %post
 echo "************************************************************"
 echo "Installling required components"
@@ -25,7 +26,9 @@ echo "************************************************************"
   chmod +x /opt/mopac/MOPAC2016.exe
   # Type your MOPAC license key, and uncomment the following line
   #./MOPAC2016.exe $MOPAC_LICENSE_KEY
-  echo -ne '\n' "Yes"  | ./MOPAC2016.exe $(cat mopac_license.txt)
+  if [[ -e  ./mopac_license.txt]] ; then
+    echo -ne '\n' "Yes"  | ./MOPAC2016.exe $(cat mopac_license.txt)
+  fi
 %environment
   LD_LIBRARY_PATH=/opt/mopac
   export LD_LIBRARY_PATH
