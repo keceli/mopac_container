@@ -1,5 +1,12 @@
 From: ubuntu:latest
 Bootstrap: docker
+%help
+You either need to have a mopac_license.txt file in your home directory,
+or you need to edit the recipe with your own license key.
+%setup
+echo "Creating directory:"  ${SINGULARITY_ROOTFS}/opt/mopac
+mkdir -p ${SINGULARITY_ROOTFS}/opt/mopac
+cp ~/mopac_license.txt ${SINGULARITY_ROOTFS}/opt/mopac
 
 %post
 echo "************************************************************"
@@ -15,11 +22,13 @@ echo "************************************************************"
   wget http://openmopac.net/MOPAC2016_for_Linux_64_bit.zip
   unzip MOPAC2016_for_Linux_64_bit.zip
   export LD_LIBRARY_PATH=/opt/mopac
-  chmod u+x /opt/mopac/MOPAC2016.exe
-  echo -ne '\n' "Yes"  | ./MOPAC2016.exe $(cat ~/mopac_license.txt)
+  chmod +x /opt/mopac/MOPAC2016.exe
+  # Type your MOPAC license key, and uncomment the following line
+  #./MOPAC2016.exe $MOPAC_LICENSE_KEY
+  echo -ne '\n' "Yes"  | ./MOPAC2016.exe $(cat mopac_license.txt)
 %environment
   LD_LIBRARY_PATH=/opt/mopac
   export LD_LIBRARY_PATH
 %runscript
-  echo "Running mopac with input file $*"
-	exec /opt/mopac/MOPAC2016.exe "$@"
+  echo "Running mopac with input file $1"
+  exec /opt/mopac/MOPAC2016.exe "$1"
