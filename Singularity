@@ -10,7 +10,7 @@ echo "************************************************************"
 echo "Installling MOPAC"
 echo "************************************************************"    
   mkdir -p /opt/mopac
-  sudo chmod 777 /opt/mopac
+  chmod 777 /opt/mopac
   cd /opt/mopac
   wget http://openmopac.net/MOPAC2016_for_Linux_64_bit.zip
   unzip MOPAC2016_for_Linux_64_bit.zip
